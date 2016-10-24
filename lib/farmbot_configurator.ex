@@ -1,6 +1,7 @@
 defmodule FarmbotConfigurator do
   require Logger
   use Supervisor
+  @env Mix.env
   def init(:prod) do
     children = [
       Plug.Adapters.Cowboy.child_spec(:http, FarmbotRouter, [restart: :permanent], [port: 80])
@@ -18,6 +19,6 @@ defmodule FarmbotConfigurator do
   end
 
   def start(_type, _args) do
-    Supervisor.start_link(__MODULE__, Mix.env)
+    Supervisor.start_link(__MODULE__, @env )
   end
 end
