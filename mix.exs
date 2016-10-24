@@ -11,7 +11,8 @@ defmodule FarmbotConfigurator.Mixfile do
   end
 
   def application do
-    [applications: [
+    [mod: {FarmbotConfigurator, []},
+     applications: [
       :logger,
       :plug,
       :cors_plug,
