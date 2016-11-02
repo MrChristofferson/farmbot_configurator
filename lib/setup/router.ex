@@ -18,6 +18,8 @@ defmodule FarmbotRouter do
         email = conn.params["email"]
         password = conn.params["password"]
         server = conn.params["server"]
+        timezone = conn.params["tz"]
+        BotState.update_config("timezone", timezone)
         Auth.login(email,password,server)
         send_resp(conn, 200, "YOU WONT SEE THIS")
       :wifi ->
@@ -28,6 +30,8 @@ defmodule FarmbotRouter do
         email = conn.params["email"]
         password = conn.params["password"]
         server = conn.params["server"]
+        timezone = conn.params["tz"]
+        BotState.update_config("timezone", timezone)
         Auth.login(email,password,server)
         send_resp(conn, 200, "YOU WONT SEE THIS")
     end
@@ -60,7 +64,7 @@ defmodule FarmbotRouter do
     This is so ugly
   """
   def parse_conn(conn) do
-    required_keys = ["email","password","server"]
+    required_keys = ["email","password","server", "tz"]
     with_wifi = ["wifi"]
     with_eth = ["ethernet"]
     if(Enum.all?(required_keys, fn(key) -> Map.has_key?(conn.params, key) end )) do
