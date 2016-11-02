@@ -5,7 +5,7 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
   $scope.ssids = [];
   $scope.should_use_ethernet = false;
   $scope.should_use_wifi = false;
-  
+
   $scope.url = "http://" + location.host;
   $http.get($scope.url + "/scan").then(function(resp){
     console.log(resp.data);
@@ -37,14 +37,15 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
     password = document.getElementById("fbpwd").value;
     server = document.getElementById("fbserver").value;
     port = document.getElementById("fbport").value;
+    tz = document.getElementById("timezonemenu").value;
     realSrv = "http://" + server + ":" + port;
 
     json = {
       "email": email,
       "password": password,
-      "server": realSrv
+      "server": realSrv,
+      "tz": tz,
     };
-
     if($scope.should_use_ethernet){
       json["ethernet"] = true
     } else {
