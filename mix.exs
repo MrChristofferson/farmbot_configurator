@@ -17,8 +17,7 @@ defmodule FarmbotConfigurator.Mixfile do
       :plug,
       :cors_plug,
       :poison,
-      :cowboy
-      ]]
+      :cowboy ]]
   end
 
   defp deps do

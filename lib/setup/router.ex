@@ -20,7 +20,7 @@ defmodule FarmbotRouter do
         server = conn.params["server"]
         timezone = conn.params["tz"]
         BotState.update_config("timezone", timezone)
-        Auth.login(email,password,server)
+        Fw.save_creds(email,password,server)
         send_resp(conn, 200, "YOU WONT SEE THIS")
       :wifi ->
         send_resp(conn, 200, "TRYING TO LOG IN")
@@ -32,7 +32,7 @@ defmodule FarmbotRouter do
         server = conn.params["server"]
         timezone = conn.params["tz"]
         BotState.update_config("timezone", timezone)
-        Auth.login(email,password,server)
+        Fw.save_creds(email,password,server)
         send_resp(conn, 200, "YOU WONT SEE THIS")
     end
   end
