@@ -35,7 +35,7 @@ defmodule FarmbotConfigurator.Router do
   end
 
   get "/scan" do
-    NetMan.scan
+    send_resp(conn, 200, Poison.encode!(NetMan.scan))
   end
 
   get "/tea" do

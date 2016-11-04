@@ -13,10 +13,10 @@ defmodule NetMan do
     {:ok, {:dev, nil}}
   end
 
-  def start_link(args) do
+  def start_link(env) do
     System.cmd("epmd", ["-daemon"])
     GenEvent.add_handler(Nerves.NetworkInterface.event_manager(), Network.EventManager, nil)
-    GenServer.start_link(__MODULE__, args, name: __MODULE__)
+    GenServer.start_link(__MODULE__, env, name: __MODULE__)
   end
 
   defp start_wifi_client(ssid, pass) when is_bitstring(ssid) and is_bitstring(pass) do
@@ -104,7 +104,7 @@ defmodule NetMan do
   end
 
   def handle_call(:scan, _from, {:dev, pid}) do
-    {:reply, ["a","b","c",], {:dev, pid}}
+    {:reply, ["stub","Hey this is a fake ssid","another stub",], {:dev, pid}}
   end
 
   def handle_call(:scan, _from, state ) do

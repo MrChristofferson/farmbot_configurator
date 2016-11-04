@@ -1,16 +1,14 @@
 defmodule NetworkSupervisor do
   require Logger
   use Supervisor
-  @env Mix.env
-
-  def init(_args) do
-    children = [ worker(NetMan, [[]], restart: :permanent) ]
+  def init(env) do
+    children = [ worker(NetMan, [env], restart: :permanent) ]
     opts = [strategy: :one_for_all, name: __MODULE__]
     supervise(children, opts)
   end
 
-  def start_link(args) do
+  def start_link(env) do
     Logger.debug("Starting Network")
-    Supervisor.start_link(__MODULE__, args)
+    Supervisor.start_link(__MODULE__, env)
   end
 end
