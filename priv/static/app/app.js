@@ -47,11 +47,11 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
       "tz": tz,
     };
     if($scope.should_use_ethernet){
-      json["ethernet"] = true
+      json["network"] = "ethernet"
     } else {
       ssid = document.getElementById("wifissid").value;
       psk = document.getElementById("wifipsk").value;
-      json["wifi"] = {
+      json["network"] = {
         "ssid": ssid,
         "psk": psk
       }
