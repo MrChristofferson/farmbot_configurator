@@ -5,6 +5,7 @@ defmodule FarmbotConfigurator do
   @handler Application.get_env(:farmbot_configurator, :event_handler)
   def init(:prod) do
     children = [
+      supervisor(NetworkSupervisor, [[]], restart: :permanent),
       worker(FarmbotConfigurator.EventMan, [@handler], [restart: :permanent]),
       Plug.Adapters.Cowboy.child_spec(:http, FarmbotConfigurator.Router, [restart: :permanent], [port: 80])
     ]
@@ -14,6 +15,7 @@ defmodule FarmbotConfigurator do
 
   def init(:dev) do
     children = [
+      # supervisor(NetworkSupervisor, [[]], restart: :permanent),
       worker(FarmbotConfigurator.EventMan, [@handler], [restart: :permanent]),
       Plug.Adapters.Cowboy.child_spec(:http, FarmbotConfigurator.Router, [restart: :permanent], [port: 4000])
     ]

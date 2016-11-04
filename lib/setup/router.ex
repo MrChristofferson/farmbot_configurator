@@ -35,13 +35,7 @@ defmodule FarmbotConfigurator.Router do
   end
 
   get "/scan" do
-    GenServer.cast(FarmbotConfigurator.EventMan, {:event, {:scan, self()}})
-    receive do
-      {:ssids, list} -> send_resp(conn, 200, Poison.encode!(list))
-      thing -> send_resp(conn, 500, "error: #{inspect thing}")
-    after
-      5000 -> send_resp(conn, 500, "error: timeout")
-    end
+    NetMan.scan
   end
 
   get "/tea" do
