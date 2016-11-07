@@ -1,12 +1,9 @@
-var phonecatApp = angular.module('phonecatApp', []);
-
-// Define the `PhoneListController` controller on the `phonecatApp` module
-phonecatApp.controller('PhoneListController', function PhoneListController($scope, $http) {
+var fbConfigurator = angular.module('fbConfigurator', []);
+fbConfigurator.controller('ConfiguratorController', function ConfiguratorController($scope, $http) {
+  $scope.url = "http://" + location.host;
   $scope.ssids = [];
   $scope.should_use_ethernet = false;
   $scope.should_use_wifi = false;
-
-  $scope.url = "http://" + location.host;
   $http.get($scope.url + "/scan").then(function(resp){
     console.log(resp.data);
     $scope.ssids = resp.data;
@@ -66,5 +63,42 @@ phonecatApp.controller('PhoneListController', function PhoneListController($scop
         console.log(JSON.stringify(error));
       });
     }
+  };
+})
+.controller('SecretController', function SecretController($scope, $http){
+  $scope.url = "http://" + location.host;
+  var box = document.getElementById("box");
+  function open(){
+    $scope.websocket = new WebSocket('ws://localhost:4000/ws');
+  };
+  open();
+
+  $scope.websocket.onopen = function(evt) { onOpen(evt) };
+  $scope.websocket.onclose = function(evt) { onClose(evt) };
+  $scope.websocket.onmessage = function(evt) { onMessage(evt) };
+
+  $scope.do_thing = function(){
+    var val = document.getElementById("shellbox").value
+    box.value = box.value + " " + val;
+    $scope.websocket.send(val);
+    document.getElementById("shellbox").value = "";
+  }
+
+  function onMessage(evt) {
+    // box.rows = box.rows + 1
+    box.value = box.value + "\n " + evt.data + "\n >>";
+  };
+
+  function disconnect() {
+    $scope.websocket.close();
+  };
+
+  function onOpen(evt) {
+    console.log("CONNECTED");
+    box.value = "CONNECTED\n >>"
+  };
+
+  function onClose(evt) {
+    console.log("DISCONNECTED")
   };
 });

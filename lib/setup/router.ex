@@ -4,6 +4,8 @@ defmodule FarmbotConfigurator.Router do
   """
   alias FarmbotConfigurator.Plug.VerifyRequest
   use Plug.Router
+  require IEx
+  plug CORSPlug
 
   plug Plug.Parsers, parsers: [:urlencoded, :json],
                      pass:  ["text/*"],
@@ -17,12 +19,20 @@ defmodule FarmbotConfigurator.Router do
                       paths:  ["/login"]
 
   plug Plug.Static, at: "/", from: :farmbot_configurator
-  plug CORSPlug
   plug :match
   plug :dispatch
 
+  match "/firmware_upload" do
+    IO.inspect conn
+  end
+
   post "/login" do
     GenServer.cast(FarmbotConfigurator.EventMan, {:event, {:login, conn.params}})
+    conn
+    |> send_resp(200, "Logging in.")
+  end
+
+  get "unsafething" do
     conn
     |> send_resp(200, "Logging in.")
   end
