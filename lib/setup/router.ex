@@ -4,6 +4,8 @@ defmodule FarmbotConfigurator.Router do
   """
   alias FarmbotConfigurator.Plug.VerifyRequest
   use Plug.Router
+  require IEx
+  plug CORSPlug
 
   plug Plug.Parsers, parsers: [:urlencoded, :json],
                      pass:  ["text/*"],
@@ -17,9 +19,9 @@ defmodule FarmbotConfigurator.Router do
                       paths:  ["/login"]
 
   plug Plug.Static, at: "/", from: :farmbot_configurator
-  plug CORSPlug
   plug :match
   plug :dispatch
+
 
   post "/login" do
     GenServer.cast(FarmbotConfigurator.EventMan, {:event, {:login, conn.params}})
@@ -29,6 +31,13 @@ defmodule FarmbotConfigurator.Router do
 
   get "/" do
     headers = [{"location", "/index.html"}]
+    conn
+    |> merge_resp_headers(headers)
+    |> send_resp(301, "redirect")
+  end
+
+  get "/secret" do
+    headers = [{"location", "/secret.html"}]
     conn
     |> merge_resp_headers(headers)
     |> send_resp(301, "redirect")
