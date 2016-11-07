@@ -69,7 +69,7 @@ fbConfigurator.controller('ConfiguratorController', function ConfiguratorControl
   $scope.url = "http://" + location.host;
   var box = document.getElementById("box");
   function open(){
-    $scope.websocket = new WebSocket('ws://localhost:4000/ws');
+    $scope.websocket = new WebSocket('ws://'+ location.host + location.port + '/ws');
   };
   open();
 

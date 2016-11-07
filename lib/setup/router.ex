@@ -22,9 +22,6 @@ defmodule FarmbotConfigurator.Router do
   plug :match
   plug :dispatch
 
-  match "/firmware_upload" do
-    IO.inspect conn
-  end
 
   post "/login" do
     GenServer.cast(FarmbotConfigurator.EventMan, {:event, {:login, conn.params}})
@@ -32,13 +29,15 @@ defmodule FarmbotConfigurator.Router do
     |> send_resp(200, "Logging in.")
   end
 
-  get "unsafething" do
-    conn
-    |> send_resp(200, "Logging in.")
-  end
-
   get "/" do
     headers = [{"location", "/index.html"}]
+    conn
+    |> merge_resp_headers(headers)
+    |> send_resp(301, "redirect")
+  end
+
+  get "/secret" do
+    headers = [{"location", "/secret.html"}]
     conn
     |> merge_resp_headers(headers)
     |> send_resp(301, "redirect")
