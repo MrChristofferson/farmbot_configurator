@@ -48,7 +48,7 @@ defmodule NetMan do
   end
 
   # If bot State has no previous state
-  def handle_cast({:connect, nil, pid}, {nil, nil}) do
+  def handle_cast({:connect, nil, pid}, {nil, _}) do
     start_hostapd_deps
     start_hostapd
     {:noreply, {:hostapd, pid}}
@@ -91,15 +91,26 @@ defmodule NetMan do
     {:noreply, {:ethernet, pid}}
   end
 
+  def handle_cast({:on_ip, addr}, {c, nil}) do
+    Logger.warn("No valid callback?")
+    {:noreply, {c, nil}}
+  end
+
   # When we get a valid connection
   # def handle_cast({:on_ip, "192.168.29.185"}, {:ethernet, BotState})
-  def handle_cast({:on_ip, addr}, {c, pid} ) do
+  def handle_cast({:on_ip, addr}, {c, pid}) do
     send(pid, {:connected, c, addr})
     {:noreply, {c, pid}}
   end
 
+
+
   def handle_cast(:bad_key, {c, pid}) do
     send(pid, :bad_key)
+    {:noreply, {c, pid}}
+  end
+
+  def handle_cast({:put_pid, pid}, {c, _}) do
     {:noreply, {c, pid}}
   end
 
@@ -124,6 +135,10 @@ defmodule NetMan do
   """
   def connect(network, pid) do
     GenServer.cast(__MODULE__, {:connect, network, pid})
+  end
+
+  def put_pid(pid) do
+    GenServer.cast(__MODULE__, {:put_pid, pid})
   end
 
   # callback from the Nerves Interim Wifi Event Manager
