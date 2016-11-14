@@ -1,4 +1,4 @@
-defmodule FarmbotConfigurator.SocketHandler do
+defmodule Farmbot.Configurator.SocketHandler do
   @behaviour :cowboy_websocket_handler
 
   def init(_, _req, _opts) do

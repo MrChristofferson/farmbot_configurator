@@ -1,8 +1,8 @@
-defmodule FarmbotConfigurator.Router do
+defmodule Farmbot.Configurator.Router do
   @moduledoc """
     Handles events from the static bundled web application.
   """
-  alias FarmbotConfigurator.Plug.VerifyRequest
+  alias Farmbot.Configurator.Plug.VerifyRequest
   use Plug.Router
   require IEx
   plug CORSPlug
@@ -24,7 +24,7 @@ defmodule FarmbotConfigurator.Router do
 
 
   post "/login" do
-    GenServer.cast(FarmbotConfigurator.EventMan, {:event, {:login, conn.params}})
+    GenServer.cast(Farmbot.Configurator.EventMan, {:event, {:login, conn.params}})
     conn
     |> send_resp(200, "Logging in.")
   end
