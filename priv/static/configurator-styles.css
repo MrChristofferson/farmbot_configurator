@@ -50,6 +50,15 @@ input {
   width: 95%;
 }
 
+select {
+  padding: 7px 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
 .btn {
   color: #159ACC;
   font-size: 16px;
@@ -90,4 +99,8 @@ li a {
   font-size: 30px;
   padding: 15px;
   border-radius: 4px;
+}
+
+.error {
+  color: red;
 }
