@@ -1,4 +1,4 @@
-defmodule FarmbotConfigurator.EventMan do
+defmodule Farmbot.Configurator.EventMan do
   @moduledoc """
     Forwards events to the givin event manager.
   """
@@ -21,9 +21,9 @@ defmodule FarmbotConfigurator.EventMan do
   end
 end
 
-defmodule FarmbotConfigurator.EventHan do
+defmodule Farmbot.Configurator.EventHan do
   @moduledoc """
-    A example event handler for FarmbotConfigurator.
+    A example event handler for Farmbot.Configurator.
   """
   use GenEvent
   require Logger

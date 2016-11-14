@@ -1,6 +1,6 @@
-defmodule FarmbotConfiguratorTest do
+defmodule Farmbot.ConfiguratorTest do
   use ExUnit.Case
-  doctest FarmbotConfigurator
+  doctest Farmbot.Configurator
 
   test "the truth" do
     assert 1 + 1 == 2

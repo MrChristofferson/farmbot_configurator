@@ -91,7 +91,7 @@ defmodule NetMan do
     {:noreply, {:ethernet, pid}}
   end
 
-  def handle_cast({:on_ip, addr}, {c, nil}) do
+  def handle_cast({:on_ip, _addr}, {c, nil}) do
     Logger.warn("No valid callback?")
     {:noreply, {c, nil}}
   end

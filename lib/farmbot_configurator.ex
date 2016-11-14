@@ -1,4 +1,4 @@
-defmodule FarmbotConfigurator do
+defmodule Farmbot.Configurator do
   require Logger
   use Supervisor
   @env Mix.env
@@ -6,26 +6,26 @@ defmodule FarmbotConfigurator do
   def init(:prod) do
     children = [
       supervisor(NetworkSupervisor, [@env], restart: :permanent),
-      worker(FarmbotConfigurator.EventMan, [@handler], [restart: :permanent]),
-      Plug.Adapters.Cowboy.child_spec(:http, FarmbotConfigurator.Router, [restart: :permanent], [
+      worker(Farmbot.Configurator.EventMan, [@handler], [restart: :permanent]),
+      Plug.Adapters.Cowboy.child_spec(:http, Farmbot.Configurator.Router, [restart: :permanent], [
           port: 80,
           dispatch: dispatch
       ])
     ]
-    opts = [strategy: :one_for_one, name: FarmbotConfigurator]
+    opts = [strategy: :one_for_one, name: Farmbot.Configurator]
     supervise(children, opts)
   end
 
   def init(:dev) do
     children = [
       supervisor(NetworkSupervisor, [@env], restart: :permanent),
-      worker(FarmbotConfigurator.EventMan, [@handler], [restart: :permanent]),
-      Plug.Adapters.Cowboy.child_spec(:http, FarmbotConfigurator.Router, [restart: :permanent], [
+      worker(Farmbot.Configurator.EventMan, [@handler], [restart: :permanent]),
+      Plug.Adapters.Cowboy.child_spec(:http, Farmbot.Configurator.Router, [restart: :permanent], [
           port: 4000,
           dispatch: dispatch
       ])
     ]
-    opts = [strategy: :one_for_one, name: FarmbotConfigurator]
+    opts = [strategy: :one_for_one, name: Farmbot.Configurator]
     supervise(children, opts)
   end
 
@@ -36,8 +36,8 @@ defmodule FarmbotConfigurator do
   defp dispatch() do
   [
     {:_, [
-      {"/ws", FarmbotConfigurator.SocketHandler, []},
-      {:_, Plug.Adapters.Cowboy.Handler, {FarmbotConfigurator.Router, []}}
+      {"/ws", Farmbot.Configurator.SocketHandler, []},
+      {:_, Plug.Adapters.Cowboy.Handler, {Farmbot.Configurator.Router, []}}
     ]}
   ]
   end

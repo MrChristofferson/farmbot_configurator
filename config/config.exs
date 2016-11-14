@@ -1,4 +1,4 @@
 use Mix.Config
 
 config :farmbot_configurator,
-  event_handler: FarmbotConfigurator.EventHan
+  event_handler: Farmbot.Configurator.EventHan

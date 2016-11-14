@@ -1,4 +1,4 @@
-defmodule FarmbotConfigurator.Plug.VerifyRequest do
+defmodule Farmbot.Configurator.Plug.VerifyRequest do
   import Plug.Conn
 
   defmodule IncompleteRequestError do

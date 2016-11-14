@@ -1,4 +1,4 @@
-defmodule FarmbotConfigurator.Mixfile do
+defmodule Farmbot.Configurator.Mixfile do
   use Mix.Project
 
   def project do
@@ -11,7 +11,7 @@ defmodule FarmbotConfigurator.Mixfile do
   end
 
   def application do
-    [mod: {FarmbotConfigurator, []},
+    [mod: {Farmbot.Configurator, []},
      applications: applications(Mix.env)]
   end
 
