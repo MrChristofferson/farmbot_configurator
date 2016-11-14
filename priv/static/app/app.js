@@ -4,6 +4,7 @@ fbConfigurator.controller('ConfiguratorController', function ConfiguratorControl
   $scope.ssids = [];
   $scope.should_use_ethernet = false;
   $scope.should_use_wifi = false;
+  $scope.showErrors = false;
   $http.get($scope.url + "/scan").then(function(resp){
     console.log(resp.data);
     $scope.ssids = resp.data;
@@ -54,7 +55,8 @@ fbConfigurator.controller('ConfiguratorController', function ConfiguratorControl
       }
     }
 
-    if(email != ""){
+    var EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(EMAIL_REGEX.test(email)){
       console.log(JSON.stringify(json));
       $http.post($scope.url + "/login", json).then(function(resp){
         console.log("Should never see this...");
@@ -62,6 +64,8 @@ fbConfigurator.controller('ConfiguratorController', function ConfiguratorControl
         console.log("will probably see this a lot...");
         console.log(JSON.stringify(error));
       });
+    } else {
+      $scope.showErrors = true;
     }
   };
 })

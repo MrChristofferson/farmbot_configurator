@@ -591,7 +591,14 @@
           </div>
           <!-- /farmbot  config-->
 
-          <a href="#" ng-click="submit()" class="btn btn-lg form-control save-button"> <strong>Save Configuration</strong> </a>
+          <div>
+            <div class='errors' ng-if='showErrors'>
+              <p class='error'>Invalid Email Address</p>
+            </div>
+            <div>
+              <a href="#" ng-click="submit()" class="btn btn-lg form-control save-button"> <strong>Save Configuration</strong> </a>
+            </div>
+          </div>
       </div>
 
     </div> <!-- /container -->
