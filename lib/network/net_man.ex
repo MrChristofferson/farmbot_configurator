@@ -1,5 +1,5 @@
 defmodule NetMan do
-  @dnsmasq_file Application.get_env(:fb, :dnsmasq_path)
+  @dnsmasq_file Application.get_env(:farmbot, :dnsmasq_path)
   use GenServer
   require Logger
 
