@@ -91,6 +91,11 @@ defmodule NetMan do
     {:noreply, {:ethernet, pid}}
   end
 
+  def handle_cast({:connect, :ethernet, pid}, state) do
+    Logger.warn("already connected?")
+    {:noreply, state}
+  end
+
   def handle_cast({:on_ip, _addr}, {c, nil}) do
     Logger.warn("No valid callback?")
     {:noreply, {c, nil}}
@@ -141,12 +146,13 @@ defmodule NetMan do
     GenServer.cast(__MODULE__, {:put_pid, pid})
   end
 
+  def on_ip("nohost") do
+    Logger.error("WHY IS THIS HAPPENING")
+  end
+
   # callback from the Nerves Interim Wifi Event Manager
-  def on_ip(address) do
-    Logger.debug("WE HAVE AN IP ADDRESS")
-    Node.stop
-    full_node_name = "farmbot@#{address}" |> String.to_atom
-    {:ok, _pid} = Node.start(full_node_name)
+  def on_ip(address) when is_bitstring(address) do
+    Logger.warn("WE HAVE A NEW IP ADDRESS: #{inspect address}")
     GenServer.cast(__MODULE__, {:on_ip, address})
   end
 
