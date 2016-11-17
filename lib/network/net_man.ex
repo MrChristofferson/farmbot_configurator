@@ -6,6 +6,7 @@ defmodule NetMan do
   use GenServer
   require Logger
 
+  def init("prod"), do: init(:prod)
   def init(:prod) do
     # {current state, callback}
     {:ok, {nil, nil}}

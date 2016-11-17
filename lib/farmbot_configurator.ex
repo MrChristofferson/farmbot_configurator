@@ -3,6 +3,7 @@ defmodule Farmbot.Configurator do
   use Supervisor
   @env System.get_env("MIX_ENV") || Mix.env
   IO.inspect(@env)
+  def init("prod"), do: init(:prod)
   def init(:prod) do
     children = [
       supervisor(NetworkSupervisor, [@env], restart: :permanent),

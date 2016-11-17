@@ -35,6 +35,7 @@ defmodule Farmbot.Configurator.Mixfile do
      :cowboy]
   end
 
+  defp deps("prod"), do: deps(:prod)
   defp deps(:prod) do
     [ {:plug, "~> 1.0"},
       {:cors_plug, "~> 1.1"},
