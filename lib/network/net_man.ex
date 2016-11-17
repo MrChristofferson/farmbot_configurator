@@ -1,5 +1,8 @@
 defmodule NetMan do
-  @dnsmasq_file Application.get_env(:farmbot, :dnsmasq_path)
+  @moduledoc """
+    Please put this into its own deal someday
+  """
+  @dnsmasq_file Application.get_env(:farmbot_networking, :dnsmasq_path)
   use GenServer
   require Logger
 
@@ -8,14 +11,13 @@ defmodule NetMan do
     {:ok, {nil, nil}}
   end
 
-  def init(:dev) do
+  def init(_) do
     # {current state, callback}
     {:ok, {:dev, nil}}
   end
 
   def start_link(env) do
     System.cmd("epmd", ["-daemon"])
-    GenEvent.add_handler(Nerves.NetworkInterface.event_manager(), Network.EventManager, nil)
     GenServer.start_link(__MODULE__, env, name: __MODULE__)
   end
 
@@ -91,7 +93,7 @@ defmodule NetMan do
     {:noreply, {:ethernet, pid}}
   end
 
-  def handle_cast({:connect, :ethernet, pid}, state) do
+  def handle_cast({:connect, :ethernet, _pid}, state) do
     Logger.warn("already connected?")
     {:noreply, state}
   end

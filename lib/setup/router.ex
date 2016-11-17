@@ -1,4 +1,5 @@
 defmodule Farmbot.Configurator.Router do
+  @cb Application.get_env(:farmbot_configurator, :callback)
   @moduledoc """
     Handles events from the static bundled web application.
   """
@@ -24,7 +25,7 @@ defmodule Farmbot.Configurator.Router do
 
 
   post "/login" do
-    GenServer.cast(Farmbot.Configurator.EventMan, {:event, {:login, conn.params}})
+    GenServer.cast(@cb, {:login, conn.params})
     conn
     |> send_resp(200, "Logging in.")
   end
