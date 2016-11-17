@@ -15,6 +15,7 @@ defmodule Farmbot.Configurator.Mixfile do
      applications: applications(System.get_env("MIX_ENV") || Mix.env)]
   end
 
+  defp applications("prod"), do: applications(:prod)
   defp applications(:prod) do
     [:logger,
      :plug,
