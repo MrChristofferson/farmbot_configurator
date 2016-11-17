@@ -106,14 +106,14 @@ defmodule NetMan do
   # When we get a valid connection
   # def handle_cast({:on_ip, "192.168.29.185"}, {:ethernet, BotState})
   def handle_cast({:on_ip, addr}, {c, pid}) do
-    send(pid, {:connected, c, addr})
+    GenServer.cast(pid, {:connected, c, addr})
     {:noreply, {c, pid}}
   end
 
 
 
   def handle_cast(:bad_key, {c, pid}) do
-    send(pid, :bad_key)
+    GenServer.cast(pid, :bad_key)
     {:noreply, {c, pid}}
   end
 
