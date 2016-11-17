@@ -19,6 +19,7 @@ defmodule NetMan do
 
   def start_link(env) do
     System.cmd("epmd", ["-daemon"])
+    GenEvent.add_handler(Nerves.NetworkInterface.event_manager(), Network.EventManager, nil)
     GenServer.start_link(__MODULE__, env, name: __MODULE__)
   end
 
@@ -110,8 +111,6 @@ defmodule NetMan do
     GenServer.cast(pid, {:connected, c, addr})
     {:noreply, {c, pid}}
   end
-
-
 
   def handle_cast(:bad_key, {c, pid}) do
     GenServer.cast(pid, :bad_key)
