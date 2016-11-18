@@ -33,10 +33,11 @@ fbConfigurator.controller('ConfiguratorController', function ConfiguratorControl
   $scope.submit = function(){
     email = document.getElementById("fbemail").value;
     password = document.getElementById("fbpwd").value;
+    protocol = document.getElementById("protocol").value;
     server = document.getElementById("fbserver").value;
     port = document.getElementById("fbport").value;
     tz = document.getElementById("timezonemenu").value;
-    realSrv = "http://" + server + ":" + port;
+    realSrv = protocol + server + ":" + port;
 
     json = {
       "email": email,

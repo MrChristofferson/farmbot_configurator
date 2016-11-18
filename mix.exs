@@ -7,14 +7,15 @@ defmodule Farmbot.Configurator.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps(Mix.env)]
+     deps: deps(System.get_env("MIX_ENV") || Mix.env)]
   end
 
   def application do
     [mod: {Farmbot.Configurator, []},
-     applications: applications(Mix.env)]
+     applications: applications(System.get_env("MIX_ENV") || Mix.env)]
   end
 
+  defp applications("prod"), do: applications(:prod)
   defp applications(:prod) do
     [:logger,
      :plug,
@@ -25,6 +26,7 @@ defmodule Farmbot.Configurator.Mixfile do
      :nerves_interim_wifi]
   end
 
+  defp applications("dev"), do: applications(:dev)
   defp applications(:dev) do
     [:logger,
      :plug,
@@ -33,6 +35,7 @@ defmodule Farmbot.Configurator.Mixfile do
      :cowboy]
   end
 
+  defp deps("prod"), do: deps(:prod)
   defp deps(:prod) do
     [ {:plug, "~> 1.0"},
       {:cors_plug, "~> 1.1"},

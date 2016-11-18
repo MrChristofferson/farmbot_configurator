@@ -1,12 +1,12 @@
 defmodule Farmbot.Configurator do
   require Logger
   use Supervisor
-  @env Mix.env
-  @handler Application.get_env(:farmbot_configurator, :event_handler)
+  @env System.get_env("MIX_ENV") || Mix.env
+  IO.inspect(@env)
+  def init("prod"), do: init(:prod)
   def init(:prod) do
     children = [
       supervisor(NetworkSupervisor, [@env], restart: :permanent),
-      worker(Farmbot.Configurator.EventMan, [@handler], [restart: :permanent]),
       Plug.Adapters.Cowboy.child_spec(:http, Farmbot.Configurator.Router, [restart: :permanent], [
           port: 80,
           dispatch: dispatch
@@ -16,10 +16,9 @@ defmodule Farmbot.Configurator do
     supervise(children, opts)
   end
 
-  def init(:dev) do
+  def init(_) do
     children = [
       supervisor(NetworkSupervisor, [@env], restart: :permanent),
-      worker(Farmbot.Configurator.EventMan, [@handler], [restart: :permanent]),
       Plug.Adapters.Cowboy.child_spec(:http, Farmbot.Configurator.Router, [restart: :permanent], [
           port: 4000,
           dispatch: dispatch

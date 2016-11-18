@@ -1,14 +1,18 @@
 defmodule NetMan do
-  @dnsmasq_file Application.get_env(:farmbot, :dnsmasq_path)
+  @moduledoc """
+    Please put this into its own deal someday
+  """
+  @dnsmasq_file Application.get_env(:farmbot_networking, :dnsmasq_path)
   use GenServer
   require Logger
 
+  def init("prod"), do: init(:prod)
   def init(:prod) do
     # {current state, callback}
     {:ok, {nil, nil}}
   end
 
-  def init(:dev) do
+  def init(_) do
     # {current state, callback}
     {:ok, {:dev, nil}}
   end
@@ -91,6 +95,11 @@ defmodule NetMan do
     {:noreply, {:ethernet, pid}}
   end
 
+  def handle_cast({:connect, :ethernet, _pid}, state) do
+    Logger.warn("already connected?")
+    {:noreply, state}
+  end
+
   def handle_cast({:on_ip, _addr}, {c, nil}) do
     Logger.warn("No valid callback?")
     {:noreply, {c, nil}}
@@ -99,14 +108,12 @@ defmodule NetMan do
   # When we get a valid connection
   # def handle_cast({:on_ip, "192.168.29.185"}, {:ethernet, BotState})
   def handle_cast({:on_ip, addr}, {c, pid}) do
-    send(pid, {:connected, c, addr})
+    GenServer.cast(pid, {:connected, c, addr})
     {:noreply, {c, pid}}
   end
 
-
-
   def handle_cast(:bad_key, {c, pid}) do
-    send(pid, :bad_key)
+    GenServer.cast(pid, :bad_key)
     {:noreply, {c, pid}}
   end
 
@@ -141,12 +148,13 @@ defmodule NetMan do
     GenServer.cast(__MODULE__, {:put_pid, pid})
   end
 
+  def on_ip("nohost") do
+    Logger.error("WHY IS THIS HAPPENING")
+  end
+
   # callback from the Nerves Interim Wifi Event Manager
-  def on_ip(address) do
-    Logger.debug("WE HAVE AN IP ADDRESS")
-    Node.stop
-    full_node_name = "farmbot@#{address}" |> String.to_atom
-    {:ok, _pid} = Node.start(full_node_name)
+  def on_ip(address) when is_bitstring(address) do
+    Logger.warn("WE HAVE A NEW IP ADDRESS: #{inspect address}")
     GenServer.cast(__MODULE__, {:on_ip, address})
   end
 
