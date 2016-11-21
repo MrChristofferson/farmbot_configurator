@@ -44,6 +44,10 @@ defmodule NetMan do
     System.cmd("hostapd", ["-B", "-d", "/etc/hostapd/hostapd.conf"]) |> print_cmd_result
   end
 
+  def handle_cast({:connect, nil, pid}, {:dev, _}) do
+    {:noreply, {:dev, pid}}
+  end
+
   def handle_cast({:connect, _, pid}, {:dev, _}) do
     spawn(fn ->
       NetMan.on_ip("localhost")
