@@ -5,6 +5,20 @@ fbConfigurator.controller('ConfiguratorController', function ConfiguratorControl
   $scope.should_use_ethernet = false;
   $scope.should_use_wifi = false;
   $scope.showErrors = false;
+  $scope.info = "";
+  $scope.secret_counter = 0;
+
+  $scope.show_info = function(){
+    $scope.secret_counter = $scope.secret_counter + 1
+    console.log($scope.secret_counter)
+    if($scope.secret_counter == 5){
+      $http.get($scope.url + "/info").then(function(resp){
+        console.log(resp.data);
+        $scope.info = resp.data;
+      })
+    }
+  }
+
   $http.get($scope.url + "/scan").then(function(resp){
     console.log(resp.data);
     $scope.ssids = resp.data;

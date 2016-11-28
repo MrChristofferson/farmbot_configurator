@@ -9,7 +9,7 @@ defmodule Farmbot.Configurator.SocketHandler do
 
   #Called on websocket connection initialization.
   def websocket_init(_type, req, _opts) do
-    {:ok, pid} = Comms.start_link(self())
+    {:ok, pid} = Blah.start_link(self())
     state = pid
     {:ok, req, state, @timeout}
   end
@@ -21,7 +21,7 @@ defmodule Farmbot.Configurator.SocketHandler do
 
   # Handle other messages from the browser - don't reply
   def websocket_handle({:text, message}, req, state) do
-    Comms.do_thing(message)
+    Blah.do_thing(message)
     {:ok, req, state}
   end
 
@@ -36,27 +36,27 @@ defmodule Farmbot.Configurator.SocketHandler do
   end
 end
 
-defmodule Comms do
+defmodule Blah do
   use GenServer
-  def start_link(pid) do
-    GenServer.start_link(__MODULE__, pid, name: __MODULE__)
-  end
-  def init(pid) do
-    {:ok, pid}
+  require Logger
+  def start_link(state) do
+    GenServer.start_link(__MODULE__, state)
   end
 
-  def handle_info({:send, msg}, pid) do
-    send(pid, msg)
-    {:noreply, pid}
+  def init(state) do
+    {:ok, state}
   end
 
-  def send(msg) do
-    send Comms, {:send, msg}
+  def do_thing(thing) do
+    Logger.warn ("#{__MODULE__}: Unhandled thing: #{inspect thing}")
   end
 
-  def do_thing(message) do
-    with {:ok, f} <- Code.string_to_quoted(String.strip(message)),
-          {output, _} <- Code.eval_quoted(f),
-          do: send(output)
+  def handle_cast({:send, stuff}, socket) do
+    send socket, stuff
+    {:noreply, socket}
+  end
+
+  def send(stuff) do
+    GenServer.cast(__MODULE__, {:send, stuff})
   end
 end

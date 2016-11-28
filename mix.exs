@@ -27,6 +27,7 @@ defmodule Farmbot.Configurator.Mixfile do
   end
 
   defp applications("dev"), do: applications(:dev)
+  defp applications("test"), do: applications(:dev)
   defp applications(:dev) do
     [:logger,
      :plug,

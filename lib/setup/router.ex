@@ -37,6 +37,11 @@ defmodule Farmbot.Configurator.Router do
     |> send_resp(301, "redirect")
   end
 
+  get "/info" do
+    conn
+    |> send_resp(200, Poison.encode!(%{name: Node.self}))
+  end
+
   get "/secret" do
     headers = [{"location", "/secret.html"}]
     conn
