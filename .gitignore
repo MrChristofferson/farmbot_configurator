@@ -18,3 +18,7 @@ erl_crash.dump
 
 *.secret*
 node_modules
+npm-debug.log
+# compiled web output
+priv/static
+priv/old
