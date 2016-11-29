@@ -1,5 +1,6 @@
 defmodule Farmbot.Configurator.Router do
   @cb Application.get_env(:farmbot_configurator, :callback)
+  @env Mix.env
   @moduledoc """
     Handles events from the static bundled web application.
   """

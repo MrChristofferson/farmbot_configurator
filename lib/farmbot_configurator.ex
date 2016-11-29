@@ -19,6 +19,7 @@ defmodule Farmbot.Configurator do
   def init(_) do
     children = [
       supervisor(NetworkSupervisor, [@env], restart: :permanent),
+      worker(WebPack, [], restart: :permanent),
       Plug.Adapters.Cowboy.child_spec(:http, Farmbot.Configurator.Router, [restart: :permanent], [
           port: 4000,
           dispatch: dispatch

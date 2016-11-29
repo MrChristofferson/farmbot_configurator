@@ -1,17 +1,30 @@
+var HtmlWebpackPlugin = require( 'html-webpack-plugin' );
+
+console.log("Welcome to webpack in Elixir Land without Phoenix???!!!");
+env = process.env.NODE_ENV;
+console.log(env);
 module.exports = {
-  entry: "./web/ts/entry.tsx",
+  entry: "./web/js/entry.js",
   output: {
-    path: "./priv/static/js",
-    filename: "app.js"
+    path: "./priv/static/",
+    filename: "bundle.js"
   },
   resolve: {
-    // Add `.ts` and `.tsx` as a resolvable extension.
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
+    modulesDirectories: ['node_modules'],
+    extensions:         ['', '.js', '.elm']
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './web/html/index.html',
+      inject:   'body',
+      filename: 'index.html'
+    })
+  ],
   module: {
     loaders: [
-      { test: /\.tsx?$/, loader: 'ts-loader' },
-      { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader' }
+      { test: /\.css$/, loader: "style-loader!css-loader" },
+      { test: /\.elm$/, exclude: [/elm-stuff/, /node_modules/],
+        loader:  'elm-webpack?verbose=true&warn=true&debug=true'}
     ]
   }
 };

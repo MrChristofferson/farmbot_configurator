@@ -1,5 +1,7 @@
 defmodule Farmbot.Configurator.Mixfile do
   use Mix.Project
+  # tehe
+  System.put_env("NODE_ENV", Mix.env |> Atom.to_string)
 
   def project do
     [app: :farmbot_configurator,
