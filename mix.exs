@@ -7,49 +7,30 @@ defmodule Farmbot.Configurator.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps(System.get_env("MIX_ENV") || Mix.env)]
+     deps: deps]
   end
 
   def application do
     [mod: {Farmbot.Configurator, []},
-     applications: applications(System.get_env("MIX_ENV") || Mix.env)]
+     applications: applications]
   end
 
-  defp applications("prod"), do: applications(:prod)
-  defp applications(:prod) do
+
+  defp applications do
     [:logger,
      :plug,
      :cors_plug,
      :poison,
      :cowboy,
-     :nerves_networking,
-     :nerves_interim_wifi]
+     :web_socket]
   end
 
-  defp applications("dev"), do: applications(:dev)
-  defp applications(:dev) do
-    [:logger,
-     :plug,
-     :cors_plug,
-     :poison,
-     :cowboy]
-  end
-
-  defp deps("prod"), do: deps(:prod)
-  defp deps(:prod) do
+  defp deps do
     [ {:plug, "~> 1.0"},
       {:cors_plug, "~> 1.1"},
-      {:poison, "~> 2.0"},
+      {:poison, "~> 3.0"},
       {:cowboy, "~> 1.0.0"},
-      {:nerves_networking, github: "nerves-project/nerves_networking"},
-      {:nerves_interim_wifi, github: "nerves-project/nerves_interim_wifi"}]
-  end
-
-  defp deps(_) do
-    [ {:plug, "~> 1.0"},
-      {:cors_plug, "~> 1.1"},
-      {:poison, "~> 2.0"},
-      {:cowboy, "~> 1.0.0"},
-      {:fake_nerves, github: "ConnorRigby/fake_nerves"}]
+      {:web_socket, github: "slogsdon/plug-web-socket"}
+    ]
   end
 end
