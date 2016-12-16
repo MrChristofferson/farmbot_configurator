@@ -18,3 +18,5 @@ erl_crash.dump
 
 *.secret*
 node_modules
+npm*
+bundle.js

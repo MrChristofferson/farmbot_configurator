@@ -3,6 +3,7 @@ defmodule Farmbot.Configurator do
   alias Plug.Adapters.Cowboy
   alias Farmbot.Configurator.Router
   @port Application.get_env(:configurator, :port, 4000)
+  @env Mix.env
 
   def init(_) do
     # children = [
@@ -12,15 +13,15 @@ defmodule Farmbot.Configurator do
     #   ])
     # ]
     children = [
-       Plug.Adapters.Cowboy.child_spec(:http, Router, [], port: @port, dispatch: Router.dispatch_table)
+       Plug.Adapters.Cowboy.child_spec(
+        :http, Router, [], port: @port, dispatch: Router.dispatch_table),
+       worker(WebPack, [@env])
      ]
     opts = [strategy: :one_for_one, name: Farmbot.Configurator]
     supervise(children, opts)
   end
 
-  def start(_type, args) do
-    Supervisor.start_link(__MODULE__,args)
-  end
+  def start(_type, args), do: Supervisor.start_link(__MODULE__,args)
 
   # defp dispatch do
   # [
