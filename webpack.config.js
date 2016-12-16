@@ -1,24 +1,27 @@
 module.exports = {
   resolve: {
-    extensions: [".js", ".ts", ".json", ".tsx", ".css"]
+    extensions: [".js", ".ts", ".json", ".tsx", ".css", ".scss"]
   },
   entry: "./web/ts/entry.tsx",
   output: {
-    // options related how webpack emits results
-    path: "./priv/static/", // string
-    // the target directory for all output files
-    // must be an absolute path (use the Node.js path module)
-
-    filename: "bundle.js", // string
-    // the filename template for entry chunks
-
-    publicPath: "/assets/", // string
-    // the url to the output directory resolved relative to the HTML page
+    path: "./priv/static/",
+    filename: "bundle.js",
+    publicPath: "/assets/",
   },
   module: {
-    rules: [{
-      test: /\.tsx?$/,
-      loader: "ts-loader"
-    }]
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader"
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      }]
   }
 }

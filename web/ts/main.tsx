@@ -1,6 +1,9 @@
-import * as React from "react";
-export class Main extends React.Component<{}, {}> {
+// import * as React from "react";
+import { h, Component } from "preact";
+export class Main extends Component<{}, {}> {
   render() {
-    return <p>Hello World!</p>;
+    return (
+      <h1> Configure your Farmbot! </h1>
+    );
   }
 }

@@ -4,11 +4,12 @@
   "description": "Configuration application for FarmbotOS",
   "dependencies": {
     "@types/lodash": "^4.14.43",
-    "@types/react": "^0.14.55",
-    "@types/react-dom": "^0.14.19",
+    "css-loader": "^0.26.1",
     "lodash": "^4.17.2",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
+    "node-sass": "^4.0.0",
+    "preact": "^7.1.0",
+    "sass-loader": "^4.1.0",
+    "style-loader": "^0.13.1",
     "ts-loader": "^1.3.3",
     "typescript": "^2.1.4",
     "webpack": "^2.2.0-rc.0"
