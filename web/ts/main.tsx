@@ -41,7 +41,9 @@ let handle_data = function (data: RpcMessage) {
     console.dir(data);
     return;
   } else {
-
+    console.log("incoming message");
+    console.dir(data);
+    console.dir(data);
   }
 }
 
